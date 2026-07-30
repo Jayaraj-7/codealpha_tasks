@@ -1,0 +1,65 @@
+import json
+import os
+
+FILE_NAME = "bookings.json"
+
+# Create file if it doesn't exist
+if not os.path.exists(FILE_NAME):
+    with open(FILE_NAME, "w") as f:
+        json.dump([], f)
+
+while True:
+    print("\n====== CLOUD-BASED BUS PASS SYSTEM ======")
+    print("1. Book Pass")
+    print("2. View Bookings")
+    print("3. Exit")
+
+    choice = input("Enter Choice: ")
+
+    if choice == "1":
+        name = input("Enter Passenger Name: ")
+        age = input("Enter Age: ")
+        route = input("Enter Route: ")
+
+        booking = {
+            "Name": name,
+            "Age": age,
+            "Route": route,
+            "Price": 500
+        }
+
+        with open(FILE_NAME, "r") as f:
+            bookings = json.load(f)
+
+        bookings.append(booking)
+
+        with open(FILE_NAME, "w") as f:
+            json.dump(bookings, f, indent=4)
+
+        print("\n✅ Bus Pass Booked Successfully")
+        print("Passenger :", name)
+        print("Route     :", route)
+        print("Price     : ₹500")
+
+    elif choice == "2":
+        with open(FILE_NAME, "r") as f:
+            bookings = json.load(f)
+
+        print("\n====== ALL BOOKINGS ======")
+
+        if len(bookings) == 0:
+            print("No Bookings Found!")
+        else:
+            for i, b in enumerate(bookings, start=1):
+                print(f"\nBooking {i}")
+                print("Name  :", b["Name"])
+                print("Age   :", b["Age"])
+                print("Route :", b["Route"])
+                print("Price : ₹", b["Price"])
+
+    elif choice == "3":
+        print("\nThank You! Have a Safe Journey! 😊")
+        break
+
+    else:
+        print("Invalid Choice!")
